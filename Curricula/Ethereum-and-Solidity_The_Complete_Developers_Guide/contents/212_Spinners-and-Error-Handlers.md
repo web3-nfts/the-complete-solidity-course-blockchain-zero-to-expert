@@ -1,0 +1,81 @@
+# 212. Spinners and Error Handlers
+
+**components/ContributeForm.js** - Spinners and Error Handlers
+```
+import React, { Component } from "react";
+import { Form, Input, Message, Button } from "semantic-ui-react";
+import Campaign from "../ethereum/campaign";
+import web3 from "../ethereum/web3";
+import { Router } from "../routes";
+
+class ContributeForm extends Component {
+  state = {
+    value: "",
+    errorMessage: "",
+    loading: false,
+  };
+
+  onSubmit = async (event) => {
+    event.preventDefault();
+
+    const campaign = Campaign(this.props.address);
+
+    this.setState({ loading: true, errorMessage: "" });
+
+    try {
+      const accounts = await web3.eth.getAccounts();
+      await campaign.methods.contribute().send({
+        from: accounts[0],
+        value: web3.utils.toWei(this.state.value, "ether"),
+      });
+      Router.replaceRoute(`/campaigns/${this.props.address}`);
+    } catch (err) {
+      this.setState({ errorMessage: err.message });
+    }
+    this.setState({ loading: false, value: "" });
+  };
+
+  render() {
+    return (
+      <Form onSubmit={this.onSubmit} error={!!this.state.errorMessage}>
+        <Form.Field>
+          <label>Amount to Contribute</label>
+          <Input
+            value={this.state.value}
+            onChange={(event) => this.setState({ value: event.target.value })}
+            label="ether"
+            labelPosition="right"
+          />
+        </Form.Field>
+        <Message error header="Oops!" content={this.state.errorMessage} />
+        <Button primary loading={this.state.loading}>
+          Contribute!
+        </Button>
+      </Form>
+    );
+  }
+}
+
+export default ContributeForm;
+
+```
+
+<details>
+  <summary>Spinners and Error Handlers - capture</summary>
+
+**Note: Click Contribute button then notice button spinner**  
+
+![212.1_Spinners-and-Error-Handlers.png](../imgs/212.1_Spinners-and-Error-Handlers.png)
+---
+
+**Note: Click Reject button on metamask then notice the error message**
+
+![212.2_Spinners-and-Error-Handlers.png](../imgs/212.2_Spinners-and-Error-Handlers.png)
+---
+</details>
+
+##  Resources for this lecture
+
+---
+
+-   [216-spinners.zip](https://beatlesm.s3.us-west-1.amazonaws.com/ethereum-and-solidity-complete-developer-guide/216-spinners.zip)
