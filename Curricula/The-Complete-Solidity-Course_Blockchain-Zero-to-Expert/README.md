@@ -27,7 +27,7 @@ Master Solidity and Smart Contracts - Blockchain Development: 2022 - Programming
 <details>
   <summary>Section 1: First Steps - How To Succeed In This Course</summary>
 
-  1.  [What is a smart contract - Solidity](.)    
+  1.  [What is a smart contract - Solidity](contents/1_What-is-a-smart-contract_Solidity.md)    
   1.  [Join our Online School (Developers and Mentors)](.)    
   1.  [Exercise: Meet the Community](.)    
   1.  [What is an IDE - Remix Ethereum](.)    
